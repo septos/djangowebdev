@@ -1,0 +1,26 @@
+1. python manage.py startapp projects
+2. buka setting di folder project personal_portopolio, tambahkan 'projects' di installed_apps
+3. database ngedit di file models.py
+
+# Create your models here.
+class Project(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    technology = models.CharField(max_length=20)
+    image = models.FilePathField(path="/img")
+
+
+
+model yang sudah dibuat akan dibuatkan file migration nya dengan perintah
+4.python manage.py makemigrations projects
+
+setelah mengenerate file migration harus mengeksekusi nya file migration agar menjadi sebuah database dengan command
+5. python manage.py migrate projects
+
+di python kita dimungkin berinteraksi langsung dengan aplikasi dengan django shell
+6. python manage.py shell
+
+sebelum ditambahakan import dulu project nya
+	from projects.models import Project
+
+masukan database 1:40:39

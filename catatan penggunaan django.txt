@@ -1,0 +1,119 @@
+virtual environment
+untuk menmbuat lingkungan tersendiri, di lingkungan tersebut bisa menginstall library yang diperlukan
+
+
+1. pythonn -m venv venv
+2. source venv/Script/Activate
+3. pip install django
+4. django-admin startproject personal_portofolio
+
+akan membuat project dengan folder personal_portofolio
+url.py = file codingan untuk meneruska request ke halaman tertentu
+wsgi.py = driver yang berhubungan ke webserver seperti apache
+manage.py = konfigurasi administrative django
+
+5. mv personal_portofolio/manage.py
+6. mv personal_portofolio/personal_portofolio/* personal_portofolio
+7. rm -r personal_portofolio/personal_portofolio
+
+urutan folder nya
+--rp-portfolio
+	|--personal_portfolio
+	|--venv  (aktifkan dulu menggunakan source)
+	|--manage.py
+8. python manage.py runserver
+
+
+membuat aplikasi
+9. python manage.py startapp hello_world
+__init__.py = biar dikenali suatu modul python
+admin.py = untuk membuat aplikasi bisa terdaftar di admin
+apps.py = otomatis dibuat
+models.py = konfigurasi database,dengan ORM tidak perlu menghafalkan query kita menggunakan codingan di python saja cukup
+tests.py = untuk testing
+views.py = file logic untuk aplikasi kita
+
+-----------
+daftarkan aplikasi kita di setting.py
+INSTALLED_APPS = [
+	'namafolder_apps'
+]
+
+
+buat view nya di view.py
+def hello_world(request):
+    return render(request, 'hello_world.html', {})
+	
+
+buat templatenya 
+10. mkdir templates
+	--rp-portpolio
+		|--hello_world
+			|--templates
+				|--isi html.html
+
+11. touch hello_world/templates/hello_world.html
+
+
+kemudian sambungkan di routingnya
+tambahkan di urls.py
+from django.urls import path, include
+urlpatterns = [
+	path('', include('hello_world.urls')),
+	]
+	
+	
+12. Buat urls.py di folder hello_world
+		from django.urls import path
+		from hello_world import views
+
+		urlpatterns = [
+			path('', views.hello_world, name='hello_world'),
+			# (path, modul view.nama fungsinya, nama template)
+		]
+
+
+13.isikan direktori template di setting.py
+	di bagian templates = ['personal_portopolio/templates']  #['isi direktori']
+14. jalan kan browser 
+	python manage.py runserver
+
+
+--------------------------------------------------------
+ada project namanya personal_portopolio ketika buka localhost masuk ke urls.py di folder personal_portopolio ketika di runserver pada path merujuk ke project hello_world nya dan .urls nama filenya merefer ke folder hello_world di file urls.py ketika masuk ke aplikasi 
+di arahkan ke path root, view dengan nama function hello_world dan nama namenya hello_world
+
+-----
+alur runserver
+sewaktu pertama python manage.py runserver
+akan menjalankan project folder personal_portofolio pada file urls.py di dalam path('#url webnya', hello_world.urls  itu merujuk ke nama aplikasinya dan merefer ke urls.py  masing2 aplikasi mempunya urls masing2 yg diakomodir oleh urls di project folder)
+
+didalam urls.py aplikasi arahkan ke views dengan nama function nya hello_world dan penamaan hello_world
+
+
+
+
+
+--------------------------------------------------------
+menambahkan bootstrap di aplikasi kita
+	touch personal_portofolio/templates/base.html
+membuat template dasar yang digunakan seluruh halaman web yang digunakan
+isikan di base.html
+	{% block page_content %}{% endblock %}
+
+isikan di hello_world.html
+	{% extends "base.html" %}  #mengambil semua codingan di dalam base.html
+	{% block page_content %}
+	<h1>Hello World!</h1>
+	{% endblock  %}  #menandakan akhir block
+	
+
+tambahkan di setting.py
+	'DIRS': ['personal_portofolio/templates/'],
+	
+	
+
+tambahkan data bootstrap di base.html, bisa di cek di bagian download web bootstrap
+sebelum {% block page_content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
